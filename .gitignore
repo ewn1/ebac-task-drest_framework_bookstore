@@ -1,0 +1,15 @@
+# Ambientes virtuais
+.venv/
+venv/
+ENV/
+
+# Arquivos de cache do Python e Ferramentas
+__pycache__/
+*.pyc
+.pytest_cache/
+.black
+db.sqlite3
+
+# Arquivos do VS Code e Sistema Operacional
+.vscode/
+.DS_Store
