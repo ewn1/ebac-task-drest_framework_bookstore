@@ -1,11 +1,23 @@
 import pytest
+
+# Importamos as fábricas necessárias para construir nossos dublês de teste
 from app_product.factories import ProductFactory, CategoryFactory
+
+# Importamos o interpretador que queremos testar
 from app_product.serializers.product_serializer import ProductSerializer
 
+# BANCO DE DADOS DE TESTE:
+# Esta linha avisa ao pytest que todas as funções deste arquivo vão interagir com
+# o banco de dados simulado. Sem isso, o Django barra a criação das Factories.
 pytestmark = pytest.mark.django_db
 
 
 def test_product_serializer_fields_output():
+    """
+    TESTE DE ESTRUTURA DO PRODUTO (GET)
+    Garante que o ProductSerializer está convertendo o modelo Product para um JSON
+    correto e completo, incluindo o aninhamento correto das categorias para o React.
+    """
     category = CategoryFactory(title="Alta Fantasia", slug="alta-fantasia")
     product = ProductFactory(title="O Silmarillion", price=59.90, category=[category])
 
@@ -18,3 +30,25 @@ def test_product_serializer_fields_output():
     assert data["active"] is True
     assert data["category"][0]["title"] == "Alta Fantasia"
     assert data["category"][0]["slug"] == "alta-fantasia"
+
+
+def test_product_serializer_creation_with_category_ids():
+    cat_tolkien = CategoryFactory(title="Universo de Tolkien", slug="tolkien")
+    cat_mitologia = CategoryFactory(title="Mitologia", slug="mitologia")
+
+    payload = {
+        "title": "Contos Inacabados",
+        "description": "Histórias raras da Terra-média",
+        "price": 69.90,
+        "active": True,
+        "category_ids": [cat_tolkien.id, cat_mitologia.id],
+    }
+
+    serializer = ProductSerializer(data=payload)
+    assert serializer.is_valid() is True
+    product = serializer.save()
+
+    assert product.title == "Contos Inacabados"
+    assert product.category.count() == 2
+    assert cat_tolkien in product.category.all()
+    assert cat_mitologia in product.category.all()
