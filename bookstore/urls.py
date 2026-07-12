@@ -17,9 +17,24 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    re_path("product/(?P<version>(v1|v2))/", include("app_product.urls")),
-    re_path("category/(?P<version>(v1|v2))/", include("app_product.urls_category")),
+    re_path(
+        r"^api/(?P<version>(v1|v2))/",
+        include(
+            [
+                path("", include("app_product.urls")),
+                path("", include("app_order.urls")),
+            ]
+        ),
+    ),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
