@@ -35,8 +35,8 @@ class TestOrderViewSet:
 
         data = response.data
 
-        assert len(data) == 1
-        assert data[0]["user"] == user.id
+        assert len(data["results"]) == 1
+        assert data["results"][0]["user"] == user.id
 
     def test_create_order_with_witcher_and_narnia_books(self, client):
         user = UserFactory(username="gerald_de_rivia")
