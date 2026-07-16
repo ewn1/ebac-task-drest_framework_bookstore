@@ -39,8 +39,9 @@ class TestProductViewSet:
 
         data = response.data
 
-        assert len(data) == 3
-        titles = [product["title"] for product in data]
+        assert len(data["results"]) == 3
+        titles = [product["title"] for product in data["results"]]
+
         assert "O Senhor dos Anéis: A Sociedade do Anel" in titles
         assert "O Último Desejo" in titles
         assert "O Leão, a Feiticeira e o Guarda-Roupa" in titles
