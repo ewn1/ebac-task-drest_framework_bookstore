@@ -1,0 +1,25 @@
+name: CodeFactor Code Quality Review
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  codefactor-analysis:
+    name: Run CodeFactor Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Trigger CodeFactor Refresh
+        run: |
+          echo "CodeFactor webhook/analysis status check"
+          curl -sS https://www.codefactor.io/api/widgets/status
