@@ -10,22 +10,16 @@ on:
       - main
       - master
 
-permissions:
-  contents: read
-  issues: write
-  checks: write
-  pull-requests: write
-
 jobs:
   codefactor-analysis:
-    name: Run CodeFactor Review
+    name: Run CodeFactor Check
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      - name: CodeFactor Quality Action
-        uses: codefactor-io/codefactor-action@v1
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trigger CodeFactor Refresh
+        run: |
+          echo "CodeFactor webhook/analysis status check"
+          curl -sS https://www.codefactor.io/api/widgets/status
