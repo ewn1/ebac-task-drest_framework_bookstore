@@ -26,6 +26,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: CodeFactor Quality Action
-        uses: codefactor-io/codefactor-action@v0.5.0
+        uses: codefactor-io/codefactor-action@v1
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
