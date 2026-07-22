@@ -1,0 +1,31 @@
+name: CodeFactor Code Quality Review
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+  issues: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  codefactor-analysis:
+    name: Run CodeFactor Review
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: CodeFactor Quality Action
+        uses: codefactor-io/codefactor-action@v0.5.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
