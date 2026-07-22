@@ -9,6 +9,8 @@ services:
       - ./.env.dev
     depends_on:
       - db
+    networks:
+      - marcianos_network
 
   db:
     image: postgres:16-alpine
@@ -18,6 +20,12 @@ services:
       - POSTGRES_DB=bookstore_portfolio_db
       - POSTGRES_USER=bookstore_admin
       - POSTGRES_PASSWORD=bookstore_secure_pass
+    networks:
+      - marcianos_network
 
 volumes:
   postgres_data:
+
+networks:
+  marcianos_network:
+    driver: bridge
